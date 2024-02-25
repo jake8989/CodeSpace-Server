@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import decodeIdToken from './middlewares/auth';
 import connectDb from './config/Db';
+import projectRoutes from './routes/projectRoutes';
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -15,7 +16,7 @@ app.use(userRoutes);
 app.get('/', (req, res) => {
 	res.send('Hii Server Working');
 });
-app.use('/auth/v1', decodeIdToken, protectRoutsTesting);
+app.use('/auth/v1/users', decodeIdToken, projectRoutes);
 app.use('/api/v1/users', userRoutes);
 
 connectDb().then(() => {
