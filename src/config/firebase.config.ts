@@ -14,5 +14,5 @@ const firebaseConfig = {
 		process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL || '',
 	client_x509_cert_url: process.env.FIREBASE_CLIENT_X509_CERT_URL || '',
 };
-
+// console.log(firebaseConfig);
 export { firebaseConfig };

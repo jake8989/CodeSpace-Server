@@ -16,6 +16,9 @@ const User = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		password: {
+			type: String,
+		},
 		strategy: {
 			type: String,
 			required: true,
