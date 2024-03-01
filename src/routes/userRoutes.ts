@@ -6,6 +6,7 @@ import { firebaseConfig } from '../config/firebase.config';
 import * as admin from 'firebase-admin';
 import jwt from 'jsonwebtoken';
 import { UserRecord } from 'firebase-admin/lib/auth/user-record';
+import Project from '../models/Project';
 
 router.post(
 	'/new-user',
@@ -111,6 +112,37 @@ router.post(
 			}
 		} catch (error) {
 			return res.status(400).json({ message: error.message });
+		}
+	}
+);
+router.post(
+	'/verify-user',
+	async (req: express.Request, res: express.Response) => {
+		const { user_id } = req.body;
+		// console.log(req.body);
+		const findUser = await User.findOne({ userId: user_id });
+		if (findUser) {
+			return res.status(200).json({ message: 'ok' });
+		} else {
+			return res.status(400).json({ message: 'No user' });
+		}
+	}
+);
+router.post(
+	'/verify-project',
+	async (req: express.Request, res: express.Response) => {
+		const { user_id, project_id } = req.body;
+		// console.log(req.body);
+		const findProject = await Project.findOne({ project_id: project_id });
+		if (findProject) {
+			if (findProject.owner_id == user_id) {
+				return res.status(200).json({ message: 'ok' });
+			} else
+				return res
+					.status(400)
+					.json({ message: 'no project exist with this user' });
+		} else {
+			return res.status(400).json({ message: 'No project' });
 		}
 	}
 );

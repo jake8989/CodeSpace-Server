@@ -6,22 +6,35 @@ import { firebaseConfig } from '../config/firebase.config';
 import * as admin from 'firebase-admin';
 import jwt from 'jsonwebtoken';
 import Project from '../models/Project';
+// import { nanoid } from 'nanoid';
 router.post(
 	'/create-new-project',
-	(req: express.Request, res: express.Response) => {
-		const { project_id, owner_id, project_name, time } = req.body;
-		const project = { project_id, owner_id, project_name, time };
-		const newProject = new Project(project);
-		newProject
-			.save()
-			.then(() => {
-				return res
-					.status(200)
-					.json({ newProject, message: 'Project Created Succefully' });
-			})
-			.catch(() => {
-				return res.status(400).json({ message: 'Something Went Wrong' });
-			});
+	async (req: express.Request, res: express.Response) => {
+		const { project_id, owner_id, project_name, project_description, time } =
+			req.body;
+		///an user cannot make same name projects
+		try {
+			const project = {
+				project_id,
+				owner_id,
+				project_name,
+				project_description,
+				time,
+			};
+			const newProject = new Project(project);
+			newProject
+				.save()
+				.then(() => {
+					return res
+						.status(200)
+						.json({ newProject, message: 'Project Created Succefully' });
+				})
+				.catch(() => {
+					return res.status(400).json({ message: 'Something Went Wrong' });
+				});
+		} catch (error) {
+			return res.status(500).json({ message: 'Server Error\n' });
+		}
 	}
 );
 router.get(

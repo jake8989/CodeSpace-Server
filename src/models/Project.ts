@@ -18,6 +18,9 @@ const Project = new mongoose.Schema(
 			type: String,
 			required: true,
 		},
+		project_description: {
+			type: String,
+		},
 		viewers: {
 			type: [String],
 			default: [],

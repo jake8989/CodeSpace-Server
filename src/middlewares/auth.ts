@@ -33,9 +33,15 @@ async function decodeIdToken(
 			req.userId = decodeToken.userId;
 			// console.log('Verified');
 			// console.log(req.userId);
+		} else {
+			return res
+				.status(401)
+				.json({ message: 'Token Missing Please Login again to continue' });
 		}
 	} catch (error) {
-		return res.status(401).json({ message: error });
+		return res
+			.status(401)
+			.json({ message: 'Authentication Error Please login again to continue' });
 	}
 	next();
 }
